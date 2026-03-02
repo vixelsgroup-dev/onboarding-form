@@ -123,6 +123,7 @@
   .file-drop-text strong { color: var(--text); font-weight: 500; }
   .file-drop-hint { font-size: 11px; color: #bbb; margin-top: 3px; }
   .file-chosen { font-size: 12px; color: var(--success); margin-top: 7px; font-weight: 500; }
+  .email-notice { font-size: 12px; color: var(--muted); background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 11px 14px; margin-top: 4px; line-height: 1.5; }
 
   .color-row { display: flex; align-items: center; gap: 8px; }
   input[type="color"] { width: 40px; height: 40px; padding: 3px; border-radius: 7px; border: 1px solid var(--border); background: var(--white); cursor: pointer; flex-shrink: 0; }
@@ -254,13 +255,9 @@
         <div class="conditional hidden" id="logo-yes">
           <div class="question" style="margin-bottom:0">
             <p class="q-hint">SVG format preferred for best results. Low quality? No worries — we can recreate it.</p>
-            <div class="file-drop">
-              <input type="file" name="logo_file" accept=".svg,.png,.jpg,.ai,.eps" onchange="fileChosen(this, 'logoChosen')">
-              <div class="file-drop-icon">📁</div>
-              <div class="file-drop-text">Drop your logo here or <strong>browse files</strong></div>
-              <div class="file-drop-hint">SVG preferred · PNG, JPG, AI, EPS accepted</div>
-            </div>
-            <div class="file-chosen" id="logoChosen" style="display:none"></div>
+            <label class="q-label">Logo file link</label>
+            <input type="url" name="logo_link" placeholder="https://drive.google.com/... or Dropbox, WeTransfer, etc.">
+            <p class="q-hint" style="margin-top:6px;margin-bottom:0">Upload your logo to Google Drive, Dropbox, or WeTransfer and paste the link above. SVG preferred — PNG, JPG, AI, EPS also accepted.</p>
           </div>
         </div>
 
@@ -301,12 +298,9 @@
           </div>
           <div class="question" style="margin-bottom:0">
             <label class="q-label">Upload brand guidelines (optional)</label>
-            <div class="file-drop">
-              <input type="file" name="brand_guidelines_file" accept=".pdf,.zip,.png,.jpg" onchange="fileChosen(this, 'brandChosen')">
-              <div class="file-drop-icon">📋</div>
-              <div class="file-drop-text">Drop PDF, ZIP, or images or <strong>browse</strong></div>
-            </div>
-            <div class="file-chosen" id="brandChosen" style="display:none"></div>
+            <label class="q-label">Brand guidelines link</label>
+            <input type="url" name="brand_guidelines_link" placeholder="https://drive.google.com/... or Dropbox, WeTransfer, etc.">
+            <p class="q-hint" style="margin-top:6px;margin-bottom:0">Share your brand guidelines via Google Drive, Dropbox, or WeTransfer and paste the link above.</p>
           </div>
         </div>
 
@@ -401,12 +395,9 @@
         <div class="conditional hidden" id="copy-yes">
           <div class="question" style="margin-bottom:0">
             <label class="q-label">Upload or paste your content</label>
-            <div class="file-drop">
-              <input type="file" name="copy_file" accept=".docx,.pdf,.txt" onchange="fileChosen(this, 'copyChosen')">
-              <div class="file-drop-icon">📝</div>
-              <div class="file-drop-text">Upload Word, PDF, or TXT or <strong>browse</strong></div>
-            </div>
-            <div class="file-chosen" id="copyChosen" style="display:none"></div>
+            <label class="q-label">Content / copy file link</label>
+            <input type="url" name="copy_link" placeholder="https://docs.google.com/... or Drive, Dropbox, WeTransfer, etc.">
+            <p class="q-hint" style="margin-top:6px;margin-bottom:0">Share a Google Doc, or upload your Word/PDF/TXT to Google Drive, Dropbox, or WeTransfer and paste the link above.</p>
             <textarea name="copy_pasted" style="margin-top:10px" placeholder="Or paste any copy/notes here..."></textarea>
           </div>
         </div>
@@ -570,13 +561,9 @@
         </div>
         <div class="question" style="margin-bottom:0">
           <label class="q-label">Portfolio / Past work to showcase</label>
-          <div class="file-drop">
-            <input type="file" name="portfolio_files" accept=".pdf,.zip,.jpg,.png" multiple onchange="fileChosen(this, 'portfolioChosen')">
-            <div class="file-drop-icon">🗂️</div>
-            <div class="file-drop-text">Upload images, PDFs, or a ZIP or <strong>browse</strong></div>
-            <div class="file-drop-hint">Before/after photos, case studies, project images</div>
-          </div>
-          <div class="file-chosen" id="portfolioChosen" style="display:none"></div>
+          <label class="q-label">Portfolio / work samples link</label>
+          <input type="url" name="portfolio_link" placeholder="https://drive.google.com/... or Dropbox, WeTransfer, Behance, etc.">
+          <p class="q-hint" style="margin-top:6px;margin-bottom:0">Upload your images, PDFs, or a ZIP folder to Google Drive, Dropbox, or WeTransfer — or link a Behance/portfolio page.</p>
         </div>
       </div>
     </div>
@@ -667,17 +654,6 @@
     document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     document.getElementById('h_preferred_theme').value = theme;
-    updateProgress();
-  }
-
-  // ── File chosen display ──
-  function fileChosen(input, outputId) {
-    const el = document.getElementById(outputId);
-    if (input.files && input.files.length > 0) {
-      const names = Array.from(input.files).map(f => f.name).join(', ');
-      el.style.display = 'block';
-      el.textContent = '✓ ' + names;
-    }
     updateProgress();
   }
 
