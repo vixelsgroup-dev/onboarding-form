@@ -20,7 +20,7 @@
     --danger: #c0392b;
     --danger-bg: #fdf0ee;
     --radius: 10px;
-    --transition: 0.2s ease;
+    --transition: 0.18s ease;
   }
 
   body {
@@ -35,388 +35,121 @@
   .app {
     max-width: 680px;
     margin: 0 auto;
-    padding: 40px 24px 80px;
+    padding: 56px 24px 100px;
   }
 
-  /* ── Top progress bar ── */
-  .progress-header {
-    margin-bottom: 40px;
-  }
+  .header { margin-bottom: 52px; animation: fadeUp 0.5s ease both; }
+  .header-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
 
-  .progress-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 6vw, 58px); font-weight: 400; line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 18px; }
+  h1 em { font-style: italic; color: var(--muted); }
+  .header-sub { color: var(--muted); font-size: 15px; line-height: 1.65; max-width: 420px; font-weight: 300; }
 
-  .progress-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+  .progress-wrap { margin-bottom: 48px; animation: fadeUp 0.5s 0.08s ease both; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .progress-count { font-size: 12px; font-weight: 500; color: var(--text); }
+  .progress-bar { height: 2px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
 
-  .progress-fraction {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
-  }
+  .group { margin-bottom: 44px; animation: fadeUp 0.4s ease both; }
+  .group:nth-child(1) { animation-delay: 0.04s; }
+  .group:nth-child(2) { animation-delay: 0.08s; }
+  .group:nth-child(3) { animation-delay: 0.12s; }
+  .group:nth-child(4) { animation-delay: 0.16s; }
+  .group:nth-child(5) { animation-delay: 0.20s; }
+  .group:nth-child(6) { animation-delay: 0.24s; }
+  .group:nth-child(7) { animation-delay: 0.28s; }
 
-  .progress-bar {
-    height: 3px;
-    background: var(--border);
-    border-radius: 100px;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .section-subtitle { font-size: 12px; color: var(--muted); margin-left: auto; }
 
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 100px;
-    transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 22px 20px; margin-bottom: 10px; }
+  .card:last-child { margin-bottom: 0; }
 
-  /* ── Step dots ── */
-  .step-dots {
-    display: flex;
-    align-items: center;
-    gap: 0;
-  }
-
-  .step-dot-wrap {
-    display: flex;
-    align-items: center;
-    flex: 1;
-  }
-
-  .step-dot-wrap:last-child { flex: 0; }
-
-  .step-dot {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: var(--white);
-    color: var(--muted);
-    font-size: 11px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all var(--transition);
-    cursor: default;
-    position: relative;
-    z-index: 1;
-  }
-
-  .step-dot.active {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: #fff;
-  }
-
-  .step-dot.done {
-    border-color: var(--success);
-    background: var(--success);
-    color: #fff;
-  }
-
-  .step-dot.done::after {
-    content: '✓';
-    font-size: 12px;
-  }
-
-  .step-dot.done span { display: none; }
-
-  .step-connector {
-    flex: 1;
-    height: 1.5px;
-    background: var(--border);
-    transition: background var(--transition);
-    margin: 0 2px;
-  }
-
-  .step-connector.done { background: var(--success); }
-
-  /* ── Step header ── */
-  .step-header {
-    margin-bottom: 28px;
-    animation: fadeUp 0.35s ease both;
-  }
-
-  .step-eyebrow {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-
-  .step-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(26px, 4vw, 38px);
-    font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.01em;
-  }
-
-  .step-title em { font-style: italic; color: var(--muted); }
-
-  .step-desc {
-    font-size: 14px;
-    color: var(--muted);
-    margin-top: 8px;
-    font-weight: 300;
-    line-height: 1.6;
-  }
-
-  /* ── Cards ── */
-  .card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 22px;
-    margin-bottom: 10px;
-    animation: fadeUp 0.35s ease both;
-  }
-
-  .card:last-of-type { margin-bottom: 0; }
-
-  /* ── Questions ── */
   .question { margin-bottom: 18px; }
   .question:last-child { margin-bottom: 0; }
 
-  .q-label {
-    display: block;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 7px;
-    line-height: 1.4;
-  }
+  .q-label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 7px; line-height: 1.4; }
+  .q-hint { font-size: 12px; color: var(--muted); margin-bottom: 9px; line-height: 1.55; }
 
-  .q-hint {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 9px;
-    line-height: 1.55;
-  }
-
-  /* ── Inputs ── */
   input[type="text"], input[type="url"], input[type="email"],
-  input[type="tel"], textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 7px;
-    padding: 10px 13px;
-    color: var(--text);
-    font-family: 'Geist', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color var(--transition), background var(--transition);
-    resize: vertical;
+  input[type="tel"], input[type="number"], textarea, select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 7px;
+    padding: 10px 13px; color: var(--text); font-family: 'Geist', sans-serif; font-size: 14px;
+    outline: none; transition: border-color var(--transition), background var(--transition); resize: vertical;
   }
-
-  input[type="text"]:focus, input[type="url"]:focus,
-  input[type="email"]:focus, input[type="tel"]:focus, textarea:focus {
-    border-color: var(--accent);
-    background: var(--white);
+  input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus,
+  input[type="tel"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    border-color: var(--accent); background: var(--white);
   }
-
-  input::placeholder, textarea::placeholder { color: #c0bdb8; }
+  input::placeholder, textarea::placeholder { color: #bbb9b4; }
+  select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238a8680' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px; }
   textarea { min-height: 88px; }
 
-  /* ── Toggle ── */
   .toggle-group { display: flex; gap: 6px; }
-
-  .toggle-btn {
-    flex: 1;
-    padding: 9px 12px;
-    border-radius: 7px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--muted);
-    font-family: 'Geist', sans-serif;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition);
-    text-align: center;
-  }
-
+  .toggle-btn { flex: 1; padding: 9px 12px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-family: 'Geist', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all var(--transition); text-align: center; }
   .toggle-btn:hover { border-color: #ccc; color: var(--text); }
   .toggle-btn.yes.selected { background: var(--success-bg); border-color: var(--success); color: var(--success); }
-  .toggle-btn.no.selected  { background: var(--danger-bg);  border-color: var(--danger);  color: var(--danger); }
+  .toggle-btn.no.selected { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
 
-  /* ── Chips ── */
   .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
-
-  .chip {
-    padding: 6px 13px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all var(--transition);
-    user-select: none;
-  }
-
+  .chip { padding: 6px 13px; border-radius: 100px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; transition: all var(--transition); user-select: none; }
   .chip:hover { border-color: #aaa; color: var(--text); }
   .chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  /* ── Theme cards ── */
   .theme-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-  .theme-card {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 16px;
-    cursor: pointer;
-    transition: all var(--transition);
-    text-align: center;
-    background: var(--bg);
-  }
-
+  .theme-card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all var(--transition); text-align: center; background: var(--bg); }
   .theme-card:hover { border-color: #aaa; }
   .theme-card.selected { border-color: var(--accent); background: var(--white); box-shadow: 0 0 0 1px var(--accent); }
-  .theme-card-preview { width: 100%; height: 44px; border-radius: 5px; margin-bottom: 10px; overflow: hidden; display: flex; }
+  .theme-card-preview { width: 100%; height: 48px; border-radius: 5px; margin-bottom: 10px; overflow: hidden; display: flex; align-items: stretch; }
   .theme-card-preview .bar { flex: 1; }
   .theme-preview-light .bar:nth-child(1) { background: #f0ede8; }
   .theme-preview-light .bar:nth-child(2) { background: #f9f8f5; }
-  .theme-preview-light .bar:nth-child(3) { background: #fff; }
-  .theme-preview-dark .bar:nth-child(1)  { background: #0a0a0a; }
-  .theme-preview-dark .bar:nth-child(2)  { background: #141414; }
-  .theme-preview-dark .bar:nth-child(3)  { background: #1e1e1e; }
+  .theme-preview-light .bar:nth-child(3) { background: #ffffff; }
+  .theme-preview-dark .bar:nth-child(1) { background: #0a0a0a; }
+  .theme-preview-dark .bar:nth-child(2) { background: #141414; }
+  .theme-preview-dark .bar:nth-child(3) { background: #1e1e1e; }
   .theme-card-label { font-size: 13px; font-weight: 600; }
-  .theme-card-desc  { font-size: 11px; color: var(--muted); margin-top: 3px; }
+  .theme-card-desc { font-size: 11px; color: var(--muted); margin-top: 3px; }
 
-  /* ── Colour row ── */
+  .file-drop { border: 1px dashed var(--border); border-radius: 8px; padding: 22px; text-align: center; cursor: pointer; transition: all var(--transition); position: relative; background: var(--bg); }
+  .file-drop:hover { border-color: #aaa; background: var(--white); }
+  .file-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .file-drop-icon { font-size: 22px; margin-bottom: 6px; }
+  .file-drop-text { font-size: 13px; color: var(--muted); }
+  .file-drop-text strong { color: var(--text); font-weight: 500; }
+  .file-drop-hint { font-size: 11px; color: #bbb; margin-top: 3px; }
+  .file-chosen { font-size: 12px; color: var(--success); margin-top: 7px; font-weight: 500; }
+  .email-notice { font-size: 12px; color: var(--muted); background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 11px 14px; margin-top: 4px; line-height: 1.5; }
+
   .color-row { display: flex; align-items: center; gap: 8px; }
   input[type="color"] { width: 40px; height: 40px; padding: 3px; border-radius: 7px; border: 1px solid var(--border); background: var(--white); cursor: pointer; flex-shrink: 0; }
 
-  /* ── Grid ── */
   .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
-  /* ── Conditional ── */
   .conditional.hidden { display: none; }
+  .req { color: #c0392b; margin-left: 2px; }
 
-  /* ── Required ── */
-  .req { color: var(--danger); margin-left: 2px; }
+  .submit-section { margin-top: 48px; text-align: center; }
+  .submit-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: #fff; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 500; padding: 14px 36px; border-radius: 100px; border: none; cursor: pointer; transition: all var(--transition); }
+  .submit-btn:hover { background: #333; transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+  .submit-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
 
-  /* ── Link hint ── */
-  .link-hint { font-size: 11px; color: var(--muted); margin-top: 5px; line-height: 1.5; }
-
-  /* ── Nav buttons ── */
-  .step-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 32px;
-    gap: 12px;
-  }
-
-  .btn-back {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: transparent;
-    color: var(--muted);
-    font-family: 'Geist', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 12px 20px;
-    border-radius: 100px;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: all var(--transition);
-  }
-
-  .btn-back:hover { border-color: #aaa; color: var(--text); }
-
-  .btn-next {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--accent);
-    color: #fff;
-    font-family: 'Geist', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 12px 28px;
-    border-radius: 100px;
-    border: none;
-    cursor: pointer;
-    transition: all var(--transition);
-    margin-left: auto;
-  }
-
-  .btn-next:hover { background: #333; transform: translateY(-1px); }
-  .btn-next:active { transform: translateY(0); }
-  .btn-next:disabled { background: #aaa; cursor: not-allowed; transform: none; }
-
-  /* ── Success ── */
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 80px 20px;
-    animation: fadeUp 0.5s ease both;
-  }
-
+  .success-screen { display: none; text-align: center; padding: 80px 20px; animation: fadeUp 0.5s ease both; }
   .success-screen.show { display: block; }
+  .success-icon { width: 64px; height: 64px; background: var(--success-bg); border: 1px solid #9dd9bc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 22px; }
+  .success-title { font-family: 'Instrument Serif', serif; font-size: 36px; font-weight: 400; margin-bottom: 12px; }
+  .success-sub { color: var(--muted); font-size: 15px; line-height: 1.65; font-weight: 300; max-width: 360px; margin: 0 auto; }
 
-  .success-icon {
-    width: 64px; height: 64px;
-    background: var(--success-bg);
-    border: 1px solid #9dd9bc;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 28px;
-    margin: 0 auto 22px;
-  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-  .success-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 38px;
-    font-weight: 400;
-    margin-bottom: 12px;
-  }
-
-  .success-sub {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.65;
-    font-weight: 300;
-    max-width: 360px;
-    margin: 0 auto;
-  }
-
-  /* ── Animations ── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  .step-panel { display: none; }
-  .step-panel.active { display: block; animation: fadeUp 0.3s ease both; }
-
-  /* ── Responsive ── */
   @media (max-width: 540px) {
     .theme-cards, .row-2 { grid-template-columns: 1fr; }
-    .step-dot-wrap { flex: 1 1 0; }
+    .section-subtitle { display: none; }
   }
 </style>
 </head>
@@ -424,41 +157,44 @@
 
 <div class="app">
 
-  <!-- Progress header -->
-  <div class="progress-header" id="progressHeader">
-    <div class="progress-top">
-      <span class="progress-label">Your progress</span>
-      <span class="progress-fraction" id="progressFraction">Step 1 of 7</span>
-    </div>
-    <div class="progress-bar">
-      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
-    </div>
-    <div class="step-dots" id="stepDots"></div>
+  <div class="header">
+    <div class="header-eyebrow">New Project Onboarding</div>
+    <h1>Let's build your<br><em>perfect website.</em></h1>
+    <p class="header-sub">Tell us about your business. The more details you share, the better we can craft something truly yours.</p>
   </div>
 
-  <!-- FORM -->
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="progressCount">0% complete</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ✅ FORMSPREE FORM TAG — your endpoint is already set -->
   <form id="mainForm" action="https://formspree.io/f/mvzbjppp" method="POST">
 
-    <!-- Hidden fields for toggles/chips/theme -->
-    <input type="hidden" name="has_existing_website"  id="h_existing_website">
-    <input type="hidden" name="website_type_chips"     id="h_website_type">
-    <input type="hidden" name="has_logo"               id="h_logo">
-    <input type="hidden" name="has_brand_guidelines"   id="h_brand_guidelines">
-    <input type="hidden" name="palette_mood_chips"     id="h_palette_mood">
-    <input type="hidden" name="has_preferred_fonts"    id="h_preferred_fonts">
+    <!-- Hidden fields: these capture toggle/chip/theme selections for Formspree -->
+    <input type="hidden" name="has_existing_website" id="h_existing_website">
+    <input type="hidden" name="website_type_chips" id="h_website_type">
+    <input type="hidden" name="has_logo" id="h_logo">
+    <input type="hidden" name="logo_vision" id="h_logo_vision" style="display:none">
+    <input type="hidden" name="has_brand_guidelines" id="h_brand_guidelines">
+    <input type="hidden" name="palette_mood_chips" id="h_palette_mood">
+    <input type="hidden" name="has_preferred_fonts" id="h_preferred_fonts">
     <input type="hidden" name="typography_style_chips" id="h_typography_style">
-    <input type="hidden" name="preferred_theme"        id="h_preferred_theme">
-    <input type="hidden" name="has_website_copy"       id="h_website_copy">
-    <input type="hidden" name="has_testimonials"       id="h_testimonials">
+    <input type="hidden" name="preferred_theme" id="h_preferred_theme">
+    <input type="hidden" name="has_website_copy" id="h_website_copy">
+    <input type="hidden" name="has_testimonials" id="h_testimonials">
 
-    <!-- ══════════════════════════════════════
-         STEP 1 — Existing Website
-    ══════════════════════════════════════ -->
-    <div class="step-panel active" data-step="1">
-      <div class="step-header">
-        <div class="step-eyebrow">Step 1 of 7</div>
-        <div class="step-title">Existing <em>Website</em></div>
-        <p class="step-desc">Tell us where you're starting from — a rebuild or a brand new site.</p>
+    <!-- SECTION 1 — EXISTING WEBSITE -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-title">Existing Website</div>
+        <div class="section-subtitle">Where you're starting from</div>
       </div>
 
       <div class="card">
@@ -497,36 +233,31 @@
           </div>
         </div>
       </div>
-
-      <div class="step-nav">
-        <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
-      </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         STEP 2 — Brand & Visual Identity
-    ══════════════════════════════════════ -->
-    <div class="step-panel" data-step="2">
-      <div class="step-header">
-        <div class="step-eyebrow">Step 2 of 7</div>
-        <div class="step-title">Brand & <em>Visual Identity</em></div>
-        <p class="step-desc">Logo, colours, and typography — how your brand looks and feels.</p>
+    <!-- SECTION 2 — BRANDING -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div class="section-title">Brand & Visual Identity</div>
+        <div class="section-subtitle">Logo, colours, typography</div>
       </div>
 
       <div class="card">
         <div class="question">
           <label class="q-label">Do you have an existing logo?<span class="req">*</span></label>
           <div class="toggle-group">
-            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'logo-yes', 'h_logo', 'Yes')">✓ Yes, I have one</button>
-            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'logo-no',  'h_logo', 'No – need new')">✕ Need a new one</button>
+            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'logo-yes', 'h_logo', 'Yes – uploading')">✓ Yes, upload it</button>
+            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'logo-no',  'h_logo', 'No – need new logo')">✕ Need a new one</button>
           </div>
         </div>
 
         <div class="conditional hidden" id="logo-yes">
           <div class="question" style="margin-bottom:0">
+            <p class="q-hint">SVG format preferred for best results. Low quality? No worries — we can recreate it.</p>
             <label class="q-label">Logo file link</label>
             <input type="url" name="logo_link" placeholder="https://drive.google.com/... or Dropbox, WeTransfer, etc.">
-            <p class="link-hint">Upload to Google Drive, Dropbox, or WeTransfer and paste the link. SVG preferred — PNG, JPG, AI, EPS also accepted.</p>
+            <p class="q-hint" style="margin-top:6px;margin-bottom:0">Upload your logo to Google Drive, Dropbox, or WeTransfer and paste the link above. SVG preferred — PNG, JPG, AI, EPS also accepted.</p>
           </div>
         </div>
 
@@ -534,7 +265,7 @@
           <div class="question" style="margin-bottom:0">
             <label class="q-label">Describe your logo vision</label>
             <p class="q-hint">Shapes, symbols, initials, imagery, or feeling you want it to convey.</p>
-            <textarea name="logo_vision" placeholder="E.g. Minimal wordmark with a geometric icon, modern and trustworthy..."></textarea>
+            <textarea name="logo_vision" placeholder="E.g. Minimal wordmark with a geometric icon, something that feels modern and trustworthy..."></textarea>
           </div>
         </div>
       </div>
@@ -549,7 +280,7 @@
         </div>
 
         <div class="conditional hidden" id="brand-yes">
-          <div class="row-2" style="margin-bottom:14px">
+          <div class="row-2">
             <div class="question">
               <label class="q-label">Primary Colour</label>
               <div class="color-row">
@@ -566,9 +297,10 @@
             </div>
           </div>
           <div class="question" style="margin-bottom:0">
-            <label class="q-label">Brand guidelines link <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+            <label class="q-label">Upload brand guidelines (optional)</label>
+            <label class="q-label">Brand guidelines link</label>
             <input type="url" name="brand_guidelines_link" placeholder="https://drive.google.com/... or Dropbox, WeTransfer, etc.">
-            <p class="link-hint">Share your brand guidelines via Google Drive, Dropbox, or WeTransfer.</p>
+            <p class="q-hint" style="margin-top:6px;margin-bottom:0">Share your brand guidelines via Google Drive, Dropbox, or WeTransfer and paste the link above.</p>
           </div>
         </div>
 
@@ -641,21 +373,14 @@
           </div>
         </div>
       </div>
-
-      <div class="step-nav">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
-      </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         STEP 3 — Content & Copy
-    ══════════════════════════════════════ -->
-    <div class="step-panel" data-step="3">
-      <div class="step-header">
-        <div class="step-eyebrow">Step 3 of 7</div>
-        <div class="step-title">Content <em>& Copy</em></div>
-        <p class="step-desc">The text and messaging that will go on your website.</p>
+    <!-- SECTION 3 — CONTENT & COPY -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div class="section-title">Content & Copy</div>
+        <div class="section-subtitle">Text, messaging, website content</div>
       </div>
 
       <div class="card">
@@ -669,10 +394,11 @@
 
         <div class="conditional hidden" id="copy-yes">
           <div class="question" style="margin-bottom:0">
+            <label class="q-label">Upload or paste your content</label>
             <label class="q-label">Content / copy file link</label>
             <input type="url" name="copy_link" placeholder="https://docs.google.com/... or Drive, Dropbox, WeTransfer, etc.">
-            <p class="link-hint">Share a Google Doc, or upload your Word/PDF/TXT to Google Drive, Dropbox, or WeTransfer.</p>
-            <textarea name="copy_pasted" style="margin-top:10px" placeholder="Or paste any copy or notes here..."></textarea>
+            <p class="q-hint" style="margin-top:6px;margin-bottom:0">Share a Google Doc, or upload your Word/PDF/TXT to Google Drive, Dropbox, or WeTransfer and paste the link above.</p>
+            <textarea name="copy_pasted" style="margin-top:10px" placeholder="Or paste any copy/notes here..."></textarea>
           </div>
         </div>
 
@@ -683,21 +409,14 @@
           </div>
         </div>
       </div>
-
-      <div class="step-nav">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
-      </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         STEP 4 — About Your Business
-    ══════════════════════════════════════ -->
-    <div class="step-panel" data-step="4">
-      <div class="step-header">
-        <div class="step-eyebrow">Step 4 of 7</div>
-        <div class="step-title">About Your <em>Business</em></div>
-        <p class="step-desc">The essentials we need to represent you correctly online.</p>
+    <!-- SECTION 4 — BUSINESS DETAILS -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div class="section-title">About Your Business</div>
+        <div class="section-subtitle">Essentials to represent you correctly</div>
       </div>
 
       <div class="card">
@@ -707,7 +426,7 @@
             <input type="text" name="company_name" placeholder="Acme Solutions Ltd">
           </div>
           <div class="question">
-            <label class="q-label">Registration Number</label>
+            <label class="q-label">Company Registration Number</label>
             <input type="text" name="company_reg_number" placeholder="12345678">
           </div>
         </div>
@@ -721,31 +440,31 @@
         </div>
         <div class="question">
           <label class="q-label">How does your process work?</label>
-          <textarea name="process_workflow" placeholder="Step-by-step: how does a client engage with you?"></textarea>
+          <textarea name="process_workflow" placeholder="Step-by-step: how does a client engage with you? What does your workflow look like?"></textarea>
         </div>
         <div class="question" style="margin-bottom:0">
           <label class="q-label">Key Outcomes / Results you deliver</label>
-          <textarea name="key_outcomes" placeholder="What transformation does a client get? E.g. 'We help businesses increase revenue by...'"></textarea>
+          <textarea name="key_outcomes" placeholder="What transformation or result does a client get? E.g. 'We help businesses increase revenue by...'"></textarea>
         </div>
       </div>
 
       <div class="card">
         <div class="question">
           <label class="q-label">Business Address / Location<span class="req">*</span></label>
-          <textarea name="business_address" placeholder="Full address or regions/countries you operate in" style="min-height:70px"></textarea>
+          <textarea name="business_address" placeholder="Full address (if applicable) or regions/countries you operate in" style="min-height:70px"></textarea>
         </div>
         <div class="row-2">
           <div class="question">
-            <label class="q-label">Contact Phone</label>
+            <label class="q-label">Contact Phone Number</label>
             <input type="tel" name="contact_phone" placeholder="+44 7700 900000">
           </div>
           <div class="question">
-            <label class="q-label">Contact Email<span class="req">*</span></label>
+            <label class="q-label">Contact Email Address<span class="req">*</span></label>
             <input type="email" name="contact_email" placeholder="hello@yourcompany.com">
           </div>
         </div>
         <div class="question" style="margin-bottom:0">
-          <label class="q-label">Business Hours</label>
+          <label class="q-label">Office / Business Hours</label>
           <input type="text" name="business_hours" placeholder="E.g. Mon–Fri 9am–6pm, Sat 10am–2pm">
         </div>
       </div>
@@ -753,7 +472,7 @@
       <div class="card">
         <div class="question">
           <label class="q-label">Social Media Profiles</label>
-          <p class="q-hint">Paste links to any active profiles.</p>
+          <p class="q-hint">Paste links to any active profiles below.</p>
         </div>
         <div class="row-2">
           <div class="question">
@@ -782,61 +501,47 @@
           </div>
         </div>
       </div>
-
-      <div class="step-nav">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
-      </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         STEP 5 — Market & Competition
-    ══════════════════════════════════════ -->
-    <div class="step-panel" data-step="5">
-      <div class="step-header">
-        <div class="step-eyebrow">Step 5 of 7</div>
-        <div class="step-title">Market & <em>Competition</em></div>
-        <p class="step-desc">Help us position you effectively against your competitors.</p>
+    <!-- SECTION 5 — MARKET & COMPETITION -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div class="section-title">Market & Competition</div>
+        <div class="section-subtitle">Position you effectively</div>
       </div>
 
       <div class="card">
         <div class="question">
           <label class="q-label">Who are your main competitors?</label>
-          <p class="q-hint">Names or URLs of businesses you compete with.</p>
-          <textarea name="competitors" placeholder="E.g. CompetitorA.com, Brand B, Company C..."></textarea>
+          <p class="q-hint">Names or website URLs of businesses you compete with.</p>
+          <textarea name="competitors" placeholder="E.g. CompetitorA.com, Brand B, Company C — include websites if possible"></textarea>
         </div>
         <div class="question" style="margin-bottom:0">
           <label class="q-label">What sets you apart from competitors?</label>
-          <textarea name="differentiators" placeholder="Your unique selling points, or why clients choose you over others..."></textarea>
+          <textarea name="differentiators" placeholder="Your unique selling points, differentiators, or why clients choose you over others..."></textarea>
         </div>
-      </div>
-
-      <div class="step-nav">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         STEP 6 — Trust & Social Proof
-    ══════════════════════════════════════ -->
-    <div class="step-panel" data-step="6">
-      <div class="step-header">
-        <div class="step-eyebrow">Step 6 of 7</div>
-        <div class="step-title">Trust & <em>Social Proof</em></div>
-        <p class="step-desc">Evidence and credibility that converts website visitors.</p>
+    <!-- SECTION 6 — TRUST & SOCIAL PROOF -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div class="section-title">Trust & Social Proof</div>
+        <div class="section-subtitle">Evidence that builds credibility</div>
       </div>
 
       <div class="card">
         <div class="question">
           <label class="q-label">Key stats or achievements to showcase</label>
-          <p class="q-hint">Numbers speak loudly — metrics that demonstrate your impact.</p>
-          <textarea name="key_stats" placeholder="E.g. 500+ clients served, 98% satisfaction rate, 10 years in business..."></textarea>
+          <p class="q-hint">Numbers speak loudly — any metrics that demonstrate your impact.</p>
+          <textarea name="key_stats" placeholder="E.g. 500+ clients served, 98% satisfaction rate, £2M revenue generated, 10 years in business..."></textarea>
         </div>
         <div class="question">
           <label class="q-label">Past clients or companies you've worked with</label>
-          <p class="q-hint">Only those you have permission to display.</p>
-          <textarea name="past_clients" placeholder="List client/company names you'd like featured..."></textarea>
+          <p class="q-hint">Company names or logos you have permission to display.</p>
+          <textarea name="past_clients" placeholder="List client/company names you'd like featured (only those you have permission to mention)"></textarea>
         </div>
         <div class="question">
           <label class="q-label">Do you have testimonials or reviews?</label>
@@ -848,40 +553,34 @@
         <div class="conditional hidden" id="testimonials-yes">
           <div class="question" style="margin-bottom:0">
             <label class="q-label">Paste your testimonials here</label>
-            <textarea name="testimonials" placeholder='"Working with [Company] was amazing..." — Jane D., CEO of XYZ Ltd'></textarea>
+            <textarea name="testimonials" placeholder='"Working with [Company] transformed our business..." — Jane D., CEO of XYZ Ltd'></textarea>
           </div>
         </div>
         <div class="conditional hidden" id="testimonials-no">
-          <p class="q-hint" style="margin-top:8px">No problem — we'll design a section you can fill in later.</p>
+          <p class="q-hint" style="margin-top:8px">No problem — we can design a testimonials section you can fill in once you collect reviews.</p>
         </div>
         <div class="question" style="margin-bottom:0">
-          <label class="q-label">Portfolio / Past work</label>
+          <label class="q-label">Portfolio / Past work to showcase</label>
+          <label class="q-label">Portfolio / work samples link</label>
           <input type="url" name="portfolio_link" placeholder="https://drive.google.com/... or Dropbox, WeTransfer, Behance, etc.">
-          <p class="link-hint">Upload images, PDFs, or a ZIP to Google Drive/Dropbox/WeTransfer — or link a Behance/portfolio page.</p>
+          <p class="q-hint" style="margin-top:6px;margin-bottom:0">Upload your images, PDFs, or a ZIP folder to Google Drive, Dropbox, or WeTransfer — or link a Behance/portfolio page.</p>
         </div>
-      </div>
-
-      <div class="step-nav">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="button" class="btn-next" onclick="nextStep()">Continue →</button>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════
-         STEP 7 — Design Inspiration
-    ══════════════════════════════════════ -->
-    <div class="step-panel" data-step="7">
-      <div class="step-header">
-        <div class="step-eyebrow">Step 7 of 7 — Final step!</div>
-        <div class="step-title">Design <em>Inspiration</em></div>
-        <p class="step-desc">Websites you love and anything else we should know.</p>
+    <!-- SECTION 7 — DESIGN INSPIRATION -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div class="section-title">Design Inspiration</div>
+        <div class="section-subtitle">Websites you love</div>
       </div>
 
       <div class="card">
         <div class="question">
           <label class="q-label">Website designs you like as reference</label>
-          <p class="q-hint">URLs of websites whose look or feel inspires you — any industry.</p>
-          <textarea name="design_references" placeholder="https://example1.com&#10;https://example2.com&#10;https://example3.com"></textarea>
+          <p class="q-hint">Share URLs of websites whose look, feel, or layout inspires you.</p>
+          <textarea name="design_references" placeholder="https://example1.com &#10;https://example2.com &#10;https://example3.com"></textarea>
         </div>
         <div class="question">
           <label class="q-label">What do you specifically like about those sites?</label>
@@ -889,205 +588,126 @@
         </div>
         <div class="question" style="margin-bottom:0">
           <label class="q-label">Anything else we should know?</label>
-          <textarea name="additional_notes" placeholder="Special requirements, must-haves, dealbreakers, languages, integrations..."></textarea>
+          <textarea name="additional_notes" placeholder="Special requirements, must-haves, dealbreakers, languages, accessibility needs, integrations..."></textarea>
         </div>
-      </div>
-
-      <div class="step-nav">
-        <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="submit" class="btn-next" id="submitBtn">Submit →</button>
       </div>
     </div>
 
-  </form>
+    <!-- Submit -->
+    <div class="submit-section">
+      <button type="submit" class="submit-btn" id="submitBtn">
+        Submit Questionnaire →
+      </button>
+      <p class="submit-note">We'll review your answers and be in touch within 1–2 business days.</p>
+    </div>
 
-  <!-- Success screen -->
+  </form><!-- /mainForm -->
+
+  <!-- Success screen (shown after AJAX submit) -->
   <div class="success-screen" id="successScreen">
     <div class="success-icon">🎉</div>
     <h2 class="success-title">You're all set!</h2>
     <p class="success-sub">Thank you for completing the onboarding questionnaire. Our team will review everything and reach out within <strong>1–2 business days</strong> to kick things off.</p>
   </div>
 
-</div>
+</div><!-- /app -->
 
 <script>
-  const TOTAL_STEPS = 7;
-  let currentStep = 1;
-
-  // ── Required checks per step ──
-  const stepValidators = {
-    1: () => val('h_existing_website'),
-    2: () => val('h_logo') && val('h_brand_guidelines') && val('h_preferred_theme'),
-    3: () => val('h_website_copy'),
-    4: () => filled('company_name') && filled('company_description') &&
-              filled('services_products') && filled('business_address') &&
-              filled('contact_email'),
-    5: () => true,
-    6: () => true,
-    7: () => true,
-  };
-
-  function val(id) {
-    const el = document.getElementById(id);
-    return el && el.value.trim() !== '';
-  }
-
-  function filled(name) {
-    const el = document.querySelector(`[name="${name}"]`);
-    return el && el.value.trim() !== '';
-  }
-
-  function checkValidity() {
-    const panel = document.querySelector(`.step-panel[data-step="${currentStep}"]`);
-    if (!panel) return;
-    const btn = panel.querySelector('.btn-next');
-    if (!btn) return;
-    const valid = stepValidators[currentStep] ? stepValidators[currentStep]() : true;
-    btn.disabled = !valid;
-  }
-
-  // ── Build step dots ──
-  function buildDots() {
-    const container = document.getElementById('stepDots');
-    container.innerHTML = '';
-    for (let i = 1; i <= TOTAL_STEPS; i++) {
-      const wrap = document.createElement('div');
-      wrap.className = 'step-dot-wrap';
-
-      const dot = document.createElement('div');
-      dot.className = 'step-dot';
-      dot.id = `dot-${i}`;
-      dot.innerHTML = `<span>${i}</span>`;
-      wrap.appendChild(dot);
-
-      if (i < TOTAL_STEPS) {
-        const line = document.createElement('div');
-        line.className = 'step-connector';
-        line.id = `connector-${i}`;
-        wrap.appendChild(line);
-      }
-
-      container.appendChild(wrap);
-    }
-  }
-
-  // ── Update progress visuals ──
-  function updateProgress() {
-    const pct = ((currentStep - 1) / TOTAL_STEPS) * 100;
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressFraction').textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
-
-    for (let i = 1; i <= TOTAL_STEPS; i++) {
-      const dot = document.getElementById(`dot-${i}`);
-      dot.classList.remove('active', 'done');
-      if (i < currentStep) {
-        dot.classList.add('done');
-        dot.innerHTML = '';
-      } else if (i === currentStep) {
-        dot.classList.add('active');
-        dot.innerHTML = `<span>${i}</span>`;
-      } else {
-        dot.innerHTML = `<span>${i}</span>`;
-      }
-
-      if (i < TOTAL_STEPS) {
-        const conn = document.getElementById(`connector-${i}`);
-        if (conn) conn.classList.toggle('done', i < currentStep);
-      }
-    }
-  }
-
-  // ── Show step ──
-  function showStep(n) {
-    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-    const panel = document.querySelector(`.step-panel[data-step="${n}"]`);
-    if (panel) panel.classList.add('active');
-    currentStep = n;
-    updateProgress();
-    checkValidity();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function nextStep() {
-    if (currentStep < TOTAL_STEPS) showStep(currentStep + 1);
-  }
-
-  function prevStep() {
-    if (currentStep > 1) showStep(currentStep - 1);
-  }
-
   // ── Toggle Yes/No ──
   function toggle(btn, revealId, hiddenId, value) {
     const parent = btn.closest('.question');
     parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
+
     const card = btn.closest('.card');
     card.querySelectorAll('.conditional').forEach(el => el.classList.add('hidden'));
+
     const target = document.getElementById(revealId);
     if (target) target.classList.remove('hidden');
+
+    // Write value to hidden input for Formspree
     if (hiddenId) {
       const hid = document.getElementById(hiddenId);
       if (hid) hid.value = value;
     }
-    checkValidity();
+
+    updateProgress();
   }
 
   // ── Chip toggle ──
   function toggleChip(chip) {
     chip.classList.toggle('selected');
+
+    // Sync selected chip labels into the related hidden field
     const group = chip.closest('.chip-group');
     if (group && group.dataset.hidden) {
       const selected = [...group.querySelectorAll('.chip.selected')].map(c => c.textContent).join(', ');
       const hid = document.getElementById(group.dataset.hidden);
       if (hid) hid.value = selected;
     }
-    checkValidity();
+
+    updateProgress();
   }
 
-  // ── Theme select ──
+  // ── Theme selection ──
   function selectTheme(card, theme) {
     document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
     card.classList.add('selected');
     document.getElementById('h_preferred_theme').value = theme;
-    checkValidity();
+    updateProgress();
   }
 
-  // ── Colour sync ──
+  // ── Color sync ──
   function updateColorText(pickerId, textId) {
     document.getElementById(textId).value = document.getElementById(pickerId).value;
   }
   function updateColorPicker(pickerId, val) {
-    if (/^#[0-9A-Fa-f]{6}$/.test(val)) document.getElementById(pickerId).value = val;
+    if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+      document.getElementById(pickerId).value = val;
+    }
   }
 
-  // ── Live validation on text input ──
-  document.getElementById('mainForm').addEventListener('input', checkValidity);
+  // ── Progress bar ──
+  function updateProgress() {
+    const interacted = document.querySelectorAll('.toggle-btn.selected, .chip.selected, .theme-card.selected').length;
+    const totalInteractions = document.querySelectorAll('.toggle-group').length + document.querySelectorAll('.theme-cards').length;
+    const done = Math.min(interacted, totalInteractions);
+    const pct = totalInteractions > 0 ? Math.round((done / totalInteractions) * 100) : 0;
+    document.getElementById('progressFill').style.width = Math.min(pct, 100) + '%';
+    document.getElementById('progressCount').textContent = Math.min(pct, 100) + '% complete';
+  }
 
-  // ── AJAX Submit ──
+  // ── AJAX Formspree submit ──
+  // Uses no-cors so it works when the file is opened locally (file://) OR hosted online.
+  // With no-cors we can't read the response, so we just wait briefly then show success.
   document.getElementById('mainForm').addEventListener('submit', async function(e) {
     e.preventDefault();
+
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.textContent = 'Sending…';
 
+    const formData = new FormData(this);
+
     try {
       await fetch(this.action, {
         method: 'POST',
-        body: new FormData(this),
-        mode: 'no-cors'
+        body: formData,
+        mode: 'no-cors'   // ← works from local file:// and any hosted domain
       });
-    } catch (err) {}
+    } catch (err) {
+      // Even on network error, Formspree may still receive it — show success anyway.
+      // If you want strict error handling, host the file on a server instead.
+    }
 
+    // Show success screen regardless (no-cors returns opaque response we can't inspect)
     document.getElementById('mainForm').style.display = 'none';
-    document.getElementById('progressHeader').style.display = 'none';
     document.getElementById('successScreen').classList.add('show');
+    document.querySelector('.progress-wrap').style.display = 'none';
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // ── Init ──
-  buildDots();
   updateProgress();
-  checkValidity();
 </script>
 </body>
 </html>
