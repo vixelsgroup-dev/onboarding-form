@@ -895,7 +895,7 @@
 
       <div class="step-nav">
         <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="submit" class="btn-next" id="submitBtn">Submit →</button>
+        <button type="submit" class="btn-next" id="submitBtn" style="opacity:1;pointer-events:auto">Submit →</button>
       </div>
     </div>
 
@@ -940,7 +940,8 @@
   function checkValidity() {
     const panel = document.querySelector(`.step-panel[data-step="${currentStep}"]`);
     if (!panel) return;
-    const btn = panel.querySelector('.btn-next');
+    // Find the Continue btn only — never disable the submit button
+    const btn = panel.querySelector('.btn-next[type="button"]');
     if (!btn) return;
     const valid = stepValidators[currentStep] ? stepValidators[currentStep]() : true;
     btn.disabled = !valid;
