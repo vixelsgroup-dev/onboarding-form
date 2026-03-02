@@ -895,7 +895,7 @@
 
       <div class="step-nav">
         <button type="button" class="btn-back" onclick="prevStep()">← Back</button>
-        <button type="submit" class="btn-next" id="submitBtn" style="opacity:1;pointer-events:auto">Submit →</button>
+        <button type="button" class="btn-next" id="submitBtn" onclick="doSubmit()">Submit →</button>
       </div>
     </div>
 
@@ -914,84 +914,51 @@
   const TOTAL_STEPS = 7;
   let currentStep = 1;
 
-  // ─────────────────────────────────────────
-  // VALIDATION — required fields per step
-  // ─────────────────────────────────────────
-  // Returns true if the step is complete enough to proceed.
-  // We only check fields marked with * in the UI.
-
+  // ── Validation per step ──
   function isStepValid(step) {
     switch (step) {
-      case 1:
-        // Must pick Yes or No for existing website
-        return getHidden('h_existing_website') !== '';
-
-      case 2:
-        // Must pick logo option + brand guidelines option + theme
-        return getHidden('h_logo') !== ''
-            && getHidden('h_brand_guidelines') !== ''
-            && getHidden('h_preferred_theme') !== '';
-
-      case 3:
-        // Must pick Yes or No for copy
-        return getHidden('h_website_copy') !== '';
-
-      case 4:
-        // Must fill company name, description, services, address, email
-        return getField('company_name')        !== ''
-            && getField('company_description') !== ''
-            && getField('services_products')   !== ''
-            && getField('business_address')    !== ''
-            && getField('contact_email')       !== '';
-
-      default:
-        // Steps 5, 6, 7 — no required fields
-        return true;
+      case 1: return getHidden('h_existing_website') !== '';
+      case 2: return getHidden('h_logo') !== ''
+                  && getHidden('h_brand_guidelines') !== ''
+                  && getHidden('h_preferred_theme') !== '';
+      case 3: return getHidden('h_website_copy') !== '';
+      case 4: return getField('company_name')        !== ''
+                  && getField('company_description') !== ''
+                  && getField('services_products')   !== ''
+                  && getField('business_address')    !== ''
+                  && getField('contact_email')       !== '';
+      default: return true;
     }
   }
 
-  // Get value of a hidden input by id
   function getHidden(id) {
-    const el = document.getElementById(id);
+    var el = document.getElementById(id);
     return el ? el.value.trim() : '';
   }
 
-  // Get value of a named input/textarea
   function getField(name) {
-    const el = document.querySelector('[name="' + name + '"]');
+    var el = document.querySelector('[name="' + name + '"]');
     return el ? el.value.trim() : '';
   }
 
-  // ─────────────────────────────────────────
-  // UPDATE CONTINUE BUTTON STATE
-  // Only touches the Continue button (type="button") in the ACTIVE step.
-  // NEVER touches the Submit button.
-  // ─────────────────────────────────────────
+  // ── Refresh ONLY the Continue button (never submit) ──
   function refreshBtn() {
-    const panel = document.querySelector('.step-panel[data-step="' + currentStep + '"]');
+    var panel = document.querySelector('.step-panel[data-step="' + currentStep + '"]');
     if (!panel) return;
-
-    // Specifically target only the continue button, not submit
-    const continueBtn = panel.querySelector('button.btn-next[type="button"]');
+    var continueBtn = panel.querySelector('button.btn-next[type="button"]');
     if (continueBtn) {
       continueBtn.disabled = !isStepValid(currentStep);
     }
-    // Submit button (step 7) is NEVER touched here — always enabled
+    // Submit button is intentionally never touched here
   }
 
-  // ─────────────────────────────────────────
-  // STEP NAVIGATION
-  // ─────────────────────────────────────────
+  // ── Navigation ──
   function showStep(n) {
-    // Hide all panels
     document.querySelectorAll('.step-panel').forEach(function(p) {
       p.classList.remove('active');
     });
-
-    // Show target panel
-    const panel = document.querySelector('.step-panel[data-step="' + n + '"]');
+    var panel = document.querySelector('.step-panel[data-step="' + n + '"]');
     if (panel) panel.classList.add('active');
-
     currentStep = n;
     updateDots();
     refreshBtn();
@@ -999,7 +966,7 @@
   }
 
   function nextStep() {
-    if (!isStepValid(currentStep)) return; // extra guard
+    if (!isStepValid(currentStep)) return;
     if (currentStep < TOTAL_STEPS) showStep(currentStep + 1);
   }
 
@@ -1007,109 +974,84 @@
     if (currentStep > 1) showStep(currentStep - 1);
   }
 
-  // ─────────────────────────────────────────
-  // PROGRESS DOTS + BAR
-  // ─────────────────────────────────────────
+  // ── Step dots & progress bar ──
   function buildDots() {
-    const container = document.getElementById('stepDots');
+    var container = document.getElementById('stepDots');
     container.innerHTML = '';
-    for (let i = 1; i <= TOTAL_STEPS; i++) {
-      const wrap = document.createElement('div');
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
+      var wrap = document.createElement('div');
       wrap.className = 'step-dot-wrap';
-
-      const dot = document.createElement('div');
+      var dot = document.createElement('div');
       dot.className = 'step-dot';
       dot.id = 'dot-' + i;
       dot.innerHTML = '<span>' + i + '</span>';
       wrap.appendChild(dot);
-
       if (i < TOTAL_STEPS) {
-        const line = document.createElement('div');
+        var line = document.createElement('div');
         line.className = 'step-connector';
         line.id = 'conn-' + i;
         wrap.appendChild(line);
       }
-
       container.appendChild(wrap);
     }
   }
 
   function updateDots() {
-    // Progress bar fill: 0% on step 1, 100% on step 7
-    const pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
+    var pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
     document.getElementById('progressFraction').textContent = 'Step ' + currentStep + ' of ' + TOTAL_STEPS;
-
-    for (let i = 1; i <= TOTAL_STEPS; i++) {
-      const dot = document.getElementById('dot-' + i);
+    for (var i = 1; i <= TOTAL_STEPS; i++) {
+      var dot = document.getElementById('dot-' + i);
       if (!dot) continue;
-      dot.className = 'step-dot'; // reset
-
+      dot.className = 'step-dot';
       if (i < currentStep) {
         dot.classList.add('done');
-        dot.innerHTML = ''; // checkmark shown via CSS ::after
+        dot.innerHTML = '';
       } else if (i === currentStep) {
         dot.classList.add('active');
         dot.innerHTML = '<span>' + i + '</span>';
       } else {
         dot.innerHTML = '<span>' + i + '</span>';
       }
-
       if (i < TOTAL_STEPS) {
-        const conn = document.getElementById('conn-' + i);
+        var conn = document.getElementById('conn-' + i);
         if (conn) conn.classList.toggle('done', i < currentStep);
       }
     }
   }
 
-  // ─────────────────────────────────────────
-  // TOGGLE (Yes / No buttons)
-  // ─────────────────────────────────────────
+  // ── Toggle Yes/No ──
   function toggle(btn, revealId, hiddenId, value) {
-    // Deselect siblings in same toggle-group
-    const group = btn.closest('.toggle-group');
+    var group = btn.closest('.toggle-group');
     group.querySelectorAll('.toggle-btn').forEach(function(b) {
       b.classList.remove('selected');
     });
     btn.classList.add('selected');
-
-    // Hide all conditionals inside the same card
-    const card = btn.closest('.card');
+    var card = btn.closest('.card');
     card.querySelectorAll('.conditional').forEach(function(el) {
       el.classList.add('hidden');
     });
-
-    // Reveal the target conditional
-    const target = document.getElementById(revealId);
+    var target = document.getElementById(revealId);
     if (target) target.classList.remove('hidden');
-
-    // Store value in hidden field
-    const hid = document.getElementById(hiddenId);
+    var hid = document.getElementById(hiddenId);
     if (hid) hid.value = value;
-
     refreshBtn();
   }
 
-  // ─────────────────────────────────────────
-  // CHIPS (multi-select)
-  // ─────────────────────────────────────────
+  // ── Chips ──
   function toggleChip(chip) {
     chip.classList.toggle('selected');
-
-    const group = chip.closest('.chip-group');
+    var group = chip.closest('.chip-group');
     if (group && group.dataset.hidden) {
-      const selected = Array.from(group.querySelectorAll('.chip.selected'))
-        .map(function(c) { return c.textContent.trim(); })
-        .join(', ');
-      const hid = document.getElementById(group.dataset.hidden);
+      var selected = Array.from(group.querySelectorAll('.chip.selected'))
+        .map(function(c) { return c.textContent.trim(); }).join(', ');
+      var hid = document.getElementById(group.dataset.hidden);
       if (hid) hid.value = selected;
     }
     refreshBtn();
   }
 
-  // ─────────────────────────────────────────
-  // THEME CARDS
-  // ─────────────────────────────────────────
+  // ── Theme ──
   function selectTheme(card, theme) {
     document.querySelectorAll('.theme-card').forEach(function(c) {
       c.classList.remove('selected');
@@ -1119,60 +1061,48 @@
     refreshBtn();
   }
 
-  // ─────────────────────────────────────────
-  // COLOUR PICKERS
-  // ─────────────────────────────────────────
+  // ── Colour pickers ──
   function updateColorText(pickerId, textId) {
     document.getElementById(textId).value = document.getElementById(pickerId).value;
   }
-  function updateColorPicker(pickerId, hexValue) {
-    if (/^#[0-9A-Fa-f]{6}$/.test(hexValue)) {
-      document.getElementById(pickerId).value = hexValue;
+  function updateColorPicker(pickerId, hexVal) {
+    if (/^#[0-9A-Fa-f]{6}$/.test(hexVal)) {
+      document.getElementById(pickerId).value = hexVal;
     }
   }
 
-  // ─────────────────────────────────────────
-  // LIVE VALIDATION — fires on every keystroke
-  // Only refreshes the active step's continue button
-  // ─────────────────────────────────────────
-  document.getElementById('mainForm').addEventListener('input', function(e) {
-    // Don't interfere with the submit button on step 7
+  // ── Live validation on typing ──
+  document.getElementById('mainForm').addEventListener('input', function() {
     refreshBtn();
   });
 
-  // ─────────────────────────────────────────
-  // FORM SUBMIT — AJAX to Formspree
-  // ─────────────────────────────────────────
-  document.getElementById('mainForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+  // ── SUBMIT ──
+  // Using a simple onclick on the button itself — most reliable approach.
+  // Bypasses any potential event listener issues.
+  function doSubmit() {
+    var btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
 
-    const submitBtn = document.getElementById('submitBtn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Sending…';
+    var form = document.getElementById('mainForm');
+    var data = new FormData(form);
 
-    try {
-      await fetch(this.action, {
-        method: 'POST',
-        body: new FormData(this),
-        mode: 'no-cors'
-      });
-    } catch (err) {
-      // no-cors fetch — errors are expected, submission still goes through
-    }
+    fetch('https://formspree.io/f/mvzbjppp', {
+      method: 'POST',
+      body: data,
+      mode: 'no-cors'
+    }).catch(function() {}).finally(function() {
+      form.style.display = 'none';
+      document.getElementById('progressHeader').style.display = 'none';
+      document.getElementById('successScreen').classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
-    // Show success
-    document.getElementById('mainForm').style.display = 'none';
-    document.getElementById('progressHeader').style.display = 'none';
-    document.getElementById('successScreen').classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-
-  // ─────────────────────────────────────────
-  // INIT
-  // ─────────────────────────────────────────
+  // ── Init ──
   buildDots();
   updateDots();
-  refreshBtn(); // disable step 1 continue until toggle is picked
+  refreshBtn();
 </script>
 </body>
 </html>
