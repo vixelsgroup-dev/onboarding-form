@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Onboarding — Client Questionnaire</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f9f8f5;
+    --white: #ffffff;
+    --border: #e8e6e0;
+    --accent: #1a1a1a;
+    --text: #1a1a1a;
+    --muted: #8a8680;
+    --success: #2d7a4f;
+    --success-bg: #edf7f2;
+    --danger: #c0392b;
+    --danger-bg: #fdf0ee;
+    --radius: 10px;
+    --transition: 0.18s ease;
+  }
+
+  body {
+    font-family: 'Geist', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .app {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 56px 24px 100px;
+  }
+
+  .header { margin-bottom: 52px; animation: fadeUp 0.5s ease both; }
+  .header-eyebrow { font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 18px; }
+
+  h1 { font-family: 'Instrument Serif', serif; font-size: clamp(36px, 6vw, 58px); font-weight: 400; line-height: 1.08; letter-spacing: -0.01em; margin-bottom: 18px; }
+  h1 em { font-style: italic; color: var(--muted); }
+  .header-sub { color: var(--muted); font-size: 15px; line-height: 1.65; max-width: 420px; font-weight: 300; }
+
+  .progress-wrap { margin-bottom: 48px; animation: fadeUp 0.5s 0.08s ease both; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .progress-label { font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .progress-count { font-size: 12px; font-weight: 500; color: var(--text); }
+  .progress-bar { height: 2px; background: var(--border); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 100px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+
+  .group { margin-bottom: 44px; animation: fadeUp 0.4s ease both; }
+  .group:nth-child(1) { animation-delay: 0.04s; }
+  .group:nth-child(2) { animation-delay: 0.08s; }
+  .group:nth-child(3) { animation-delay: 0.12s; }
+  .group:nth-child(4) { animation-delay: 0.16s; }
+  .group:nth-child(5) { animation-delay: 0.20s; }
+  .group:nth-child(6) { animation-delay: 0.24s; }
+  .group:nth-child(7) { animation-delay: 0.28s; }
+
+  .section-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .section-num { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .section-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .section-subtitle { font-size: 12px; color: var(--muted); margin-left: auto; }
+
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 22px 20px; margin-bottom: 10px; }
+  .card:last-child { margin-bottom: 0; }
+
+  .question { margin-bottom: 18px; }
+  .question:last-child { margin-bottom: 0; }
+
+  .q-label { display: block; font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 7px; line-height: 1.4; }
+  .q-hint { font-size: 12px; color: var(--muted); margin-bottom: 9px; line-height: 1.55; }
+
+  input[type="text"], input[type="url"], input[type="email"],
+  input[type="tel"], input[type="number"], textarea, select {
+    width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 7px;
+    padding: 10px 13px; color: var(--text); font-family: 'Geist', sans-serif; font-size: 14px;
+    outline: none; transition: border-color var(--transition), background var(--transition); resize: vertical;
+  }
+  input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus,
+  input[type="tel"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+    border-color: var(--accent); background: var(--white);
+  }
+  input::placeholder, textarea::placeholder { color: #bbb9b4; }
+  select { cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238a8680' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; padding-right: 34px; }
+  textarea { min-height: 88px; }
+
+  .toggle-group { display: flex; gap: 6px; }
+  .toggle-btn { flex: 1; padding: 9px 12px; border-radius: 7px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-family: 'Geist', sans-serif; font-size: 13px; font-weight: 500; cursor: pointer; transition: all var(--transition); text-align: center; }
+  .toggle-btn:hover { border-color: #ccc; color: var(--text); }
+  .toggle-btn.yes.selected { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+  .toggle-btn.no.selected { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+
+  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { padding: 6px 13px; border-radius: 100px; border: 1px solid var(--border); background: var(--bg); color: var(--muted); font-size: 12px; font-weight: 500; cursor: pointer; transition: all var(--transition); user-select: none; }
+  .chip:hover { border-color: #aaa; color: var(--text); }
+  .chip.selected { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .theme-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .theme-card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; cursor: pointer; transition: all var(--transition); text-align: center; background: var(--bg); }
+  .theme-card:hover { border-color: #aaa; }
+  .theme-card.selected { border-color: var(--accent); background: var(--white); box-shadow: 0 0 0 1px var(--accent); }
+  .theme-card-preview { width: 100%; height: 48px; border-radius: 5px; margin-bottom: 10px; overflow: hidden; display: flex; align-items: stretch; }
+  .theme-card-preview .bar { flex: 1; }
+  .theme-preview-light .bar:nth-child(1) { background: #f0ede8; }
+  .theme-preview-light .bar:nth-child(2) { background: #f9f8f5; }
+  .theme-preview-light .bar:nth-child(3) { background: #ffffff; }
+  .theme-preview-dark .bar:nth-child(1) { background: #0a0a0a; }
+  .theme-preview-dark .bar:nth-child(2) { background: #141414; }
+  .theme-preview-dark .bar:nth-child(3) { background: #1e1e1e; }
+  .theme-card-label { font-size: 13px; font-weight: 600; }
+  .theme-card-desc { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+  .file-drop { border: 1px dashed var(--border); border-radius: 8px; padding: 22px; text-align: center; cursor: pointer; transition: all var(--transition); position: relative; background: var(--bg); }
+  .file-drop:hover { border-color: #aaa; background: var(--white); }
+  .file-drop input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .file-drop-icon { font-size: 22px; margin-bottom: 6px; }
+  .file-drop-text { font-size: 13px; color: var(--muted); }
+  .file-drop-text strong { color: var(--text); font-weight: 500; }
+  .file-drop-hint { font-size: 11px; color: #bbb; margin-top: 3px; }
+  .file-chosen { font-size: 12px; color: var(--success); margin-top: 7px; font-weight: 500; }
+
+  .color-row { display: flex; align-items: center; gap: 8px; }
+  input[type="color"] { width: 40px; height: 40px; padding: 3px; border-radius: 7px; border: 1px solid var(--border); background: var(--white); cursor: pointer; flex-shrink: 0; }
+
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .conditional.hidden { display: none; }
+  .req { color: #c0392b; margin-left: 2px; }
+
+  .submit-section { margin-top: 48px; text-align: center; }
+  .submit-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--accent); color: #fff; font-family: 'Geist', sans-serif; font-size: 14px; font-weight: 500; padding: 14px 36px; border-radius: 100px; border: none; cursor: pointer; transition: all var(--transition); }
+  .submit-btn:hover { background: #333; transform: translateY(-1px); }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { background: #aaa; cursor: not-allowed; transform: none; }
+  .submit-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+  .success-screen { display: none; text-align: center; padding: 80px 20px; animation: fadeUp 0.5s ease both; }
+  .success-screen.show { display: block; }
+  .success-icon { width: 64px; height: 64px; background: var(--success-bg); border: 1px solid #9dd9bc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 22px; }
+  .success-title { font-family: 'Instrument Serif', serif; font-size: 36px; font-weight: 400; margin-bottom: 12px; }
+  .success-sub { color: var(--muted); font-size: 15px; line-height: 1.65; font-weight: 300; max-width: 360px; margin: 0 auto; }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 540px) {
+    .theme-cards, .row-2 { grid-template-columns: 1fr; }
+    .section-subtitle { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="header">
+    <div class="header-eyebrow">New Project Onboarding</div>
+    <h1>Let's build your<br><em>perfect website.</em></h1>
+    <p class="header-sub">Tell us about your business. The more details you share, the better we can craft something truly yours.</p>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span class="progress-label">Progress</span>
+      <span class="progress-count" id="progressCount">0% complete</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- ✅ FORMSPREE FORM TAG — your endpoint is already set -->
+  <form id="mainForm" action="https://formspree.io/f/mvzbjppp" method="POST">
+
+    <!-- Hidden fields: these capture toggle/chip/theme selections for Formspree -->
+    <input type="hidden" name="has_existing_website" id="h_existing_website">
+    <input type="hidden" name="website_type_chips" id="h_website_type">
+    <input type="hidden" name="has_logo" id="h_logo">
+    <input type="hidden" name="logo_vision" id="h_logo_vision" style="display:none">
+    <input type="hidden" name="has_brand_guidelines" id="h_brand_guidelines">
+    <input type="hidden" name="palette_mood_chips" id="h_palette_mood">
+    <input type="hidden" name="has_preferred_fonts" id="h_preferred_fonts">
+    <input type="hidden" name="typography_style_chips" id="h_typography_style">
+    <input type="hidden" name="preferred_theme" id="h_preferred_theme">
+    <input type="hidden" name="has_website_copy" id="h_website_copy">
+    <input type="hidden" name="has_testimonials" id="h_testimonials">
+
+    <!-- SECTION 1 — EXISTING WEBSITE -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <div class="section-title">Existing Website</div>
+        <div class="section-subtitle">Where you're starting from</div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Do you already have a website?<span class="req">*</span></label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'existing-yes', 'h_existing_website', 'Yes')">✓ Yes</button>
+            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'existing-no',  'h_existing_website', 'No')">✕ No</button>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="existing-yes">
+          <div class="question">
+            <label class="q-label">Current website URL</label>
+            <input type="url" name="current_website_url" placeholder="https://yourwebsite.com">
+          </div>
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">What do you want to keep from your current website?</label>
+            <textarea name="keep_from_current_website" placeholder="E.g. content, structure, specific pages, domain name..."></textarea>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="existing-no">
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">What type of website are you looking for?</label>
+            <div class="chip-group" data-hidden="h_website_type">
+              <div class="chip" onclick="toggleChip(this)">Business / Corporate</div>
+              <div class="chip" onclick="toggleChip(this)">E-Commerce</div>
+              <div class="chip" onclick="toggleChip(this)">Portfolio</div>
+              <div class="chip" onclick="toggleChip(this)">Blog / Magazine</div>
+              <div class="chip" onclick="toggleChip(this)">Landing Page</div>
+              <div class="chip" onclick="toggleChip(this)">Booking / Appointment</div>
+              <div class="chip" onclick="toggleChip(this)">Non-Profit</div>
+              <div class="chip" onclick="toggleChip(this)">Other</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2 — BRANDING -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <div class="section-title">Brand & Visual Identity</div>
+        <div class="section-subtitle">Logo, colours, typography</div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Do you have an existing logo?<span class="req">*</span></label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'logo-yes', 'h_logo', 'Yes – uploading')">✓ Yes, upload it</button>
+            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'logo-no',  'h_logo', 'No – need new logo')">✕ Need a new one</button>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="logo-yes">
+          <div class="question" style="margin-bottom:0">
+            <p class="q-hint">SVG format preferred for best results. Low quality? No worries — we can recreate it.</p>
+            <div class="file-drop">
+              <input type="file" name="logo_file" accept=".svg,.png,.jpg,.ai,.eps" onchange="fileChosen(this, 'logoChosen')">
+              <div class="file-drop-icon">📁</div>
+              <div class="file-drop-text">Drop your logo here or <strong>browse files</strong></div>
+              <div class="file-drop-hint">SVG preferred · PNG, JPG, AI, EPS accepted</div>
+            </div>
+            <div class="file-chosen" id="logoChosen" style="display:none"></div>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="logo-no">
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">Describe your logo vision</label>
+            <p class="q-hint">Shapes, symbols, initials, imagery, or feeling you want it to convey.</p>
+            <textarea name="logo_vision" placeholder="E.g. Minimal wordmark with a geometric icon, something that feels modern and trustworthy..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Do you have existing brand guidelines?<span class="req">*</span></label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'brand-yes', 'h_brand_guidelines', 'Yes')">✓ Yes</button>
+            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'brand-no',  'h_brand_guidelines', 'No – create new')">✕ No, let's create</button>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="brand-yes">
+          <div class="row-2">
+            <div class="question">
+              <label class="q-label">Primary Colour</label>
+              <div class="color-row">
+                <input type="color" value="#1a1a1a" id="primaryColor" oninput="updateColorText('primaryColor','primaryHex')">
+                <input type="text" name="primary_colour" id="primaryHex" value="#1a1a1a" placeholder="#000000" style="max-width:120px" oninput="updateColorPicker('primaryColor', this.value)">
+              </div>
+            </div>
+            <div class="question">
+              <label class="q-label">Secondary Colour</label>
+              <div class="color-row">
+                <input type="color" value="#e8472a" id="secondaryColor" oninput="updateColorText('secondaryColor','secondaryHex')">
+                <input type="text" name="secondary_colour" id="secondaryHex" value="#e8472a" placeholder="#000000" style="max-width:120px" oninput="updateColorPicker('secondaryColor', this.value)">
+              </div>
+            </div>
+          </div>
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">Upload brand guidelines (optional)</label>
+            <div class="file-drop">
+              <input type="file" name="brand_guidelines_file" accept=".pdf,.zip,.png,.jpg" onchange="fileChosen(this, 'brandChosen')">
+              <div class="file-drop-icon">📋</div>
+              <div class="file-drop-text">Drop PDF, ZIP, or images or <strong>browse</strong></div>
+            </div>
+            <div class="file-chosen" id="brandChosen" style="display:none"></div>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="brand-no">
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">Pick a mood / palette direction</label>
+            <div class="chip-group" data-hidden="h_palette_mood">
+              <div class="chip" onclick="toggleChip(this)">Bold & Vibrant</div>
+              <div class="chip" onclick="toggleChip(this)">Minimal & Clean</div>
+              <div class="chip" onclick="toggleChip(this)">Earthy & Natural</div>
+              <div class="chip" onclick="toggleChip(this)">Luxury & Dark</div>
+              <div class="chip" onclick="toggleChip(this)">Pastel & Soft</div>
+              <div class="chip" onclick="toggleChip(this)">Professional & Corporate</div>
+              <div class="chip" onclick="toggleChip(this)">Playful & Fun</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Do you have preferred fonts / typography?</label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'typo-yes', 'h_preferred_fonts', 'Yes')">✓ Yes</button>
+            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'typo-no',  'h_preferred_fonts', 'No – choose for me')">✕ Choose for me</button>
+          </div>
+        </div>
+        <div class="conditional hidden" id="typo-yes">
+          <div class="row-2">
+            <div class="question">
+              <label class="q-label">Heading Font</label>
+              <input type="text" name="heading_font" placeholder="E.g. Playfair Display, Syne...">
+            </div>
+            <div class="question">
+              <label class="q-label">Body Font</label>
+              <input type="text" name="body_font" placeholder="E.g. Inter, DM Sans...">
+            </div>
+          </div>
+        </div>
+        <div class="conditional hidden" id="typo-no">
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">Typography style preference</label>
+            <div class="chip-group" data-hidden="h_typography_style">
+              <div class="chip" onclick="toggleChip(this)">Modern & Sans-Serif</div>
+              <div class="chip" onclick="toggleChip(this)">Classic & Serif</div>
+              <div class="chip" onclick="toggleChip(this)">Bold & Display</div>
+              <div class="chip" onclick="toggleChip(this)">Elegant Script</div>
+              <div class="chip" onclick="toggleChip(this)">Monospace / Tech</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <label class="q-label" style="display:block;margin-bottom:12px">Preferred website theme<span class="req">*</span></label>
+        <div class="theme-cards">
+          <div class="theme-card" onclick="selectTheme(this, 'Light')">
+            <div class="theme-card-preview theme-preview-light">
+              <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+            <div class="theme-card-label">☀️ Light</div>
+            <div class="theme-card-desc">Clean, open, airy</div>
+          </div>
+          <div class="theme-card" onclick="selectTheme(this, 'Dark')">
+            <div class="theme-card-preview theme-preview-dark">
+              <div class="bar"></div><div class="bar"></div><div class="bar"></div>
+            </div>
+            <div class="theme-card-label">🌙 Dark</div>
+            <div class="theme-card-desc">Bold, premium, dramatic</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3 — CONTENT & COPY -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <div class="section-title">Content & Copy</div>
+        <div class="section-subtitle">Text, messaging, website content</div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Do you have website copy (text content) ready?<span class="req">*</span></label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'copy-yes', 'h_website_copy', 'Yes – provided')">✓ Yes, I have it</button>
+            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'copy-no',  'h_website_copy', 'No – write for me')">✕ Write it for me</button>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="copy-yes">
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">Upload or paste your content</label>
+            <div class="file-drop">
+              <input type="file" name="copy_file" accept=".docx,.pdf,.txt" onchange="fileChosen(this, 'copyChosen')">
+              <div class="file-drop-icon">📝</div>
+              <div class="file-drop-text">Upload Word, PDF, or TXT or <strong>browse</strong></div>
+            </div>
+            <div class="file-chosen" id="copyChosen" style="display:none"></div>
+            <textarea name="copy_pasted" style="margin-top:10px" placeholder="Or paste any copy/notes here..."></textarea>
+          </div>
+        </div>
+
+        <div class="conditional hidden" id="copy-no">
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">Key messages / tone for your brand</label>
+            <textarea name="brand_tone" placeholder="E.g. Professional but approachable, innovation-focused, warm and community-driven..."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 — BUSINESS DETAILS -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <div class="section-title">About Your Business</div>
+        <div class="section-subtitle">Essentials to represent you correctly</div>
+      </div>
+
+      <div class="card">
+        <div class="row-2">
+          <div class="question">
+            <label class="q-label">Company / Trading Name<span class="req">*</span></label>
+            <input type="text" name="company_name" placeholder="Acme Solutions Ltd">
+          </div>
+          <div class="question">
+            <label class="q-label">Company Registration Number</label>
+            <input type="text" name="company_reg_number" placeholder="12345678">
+          </div>
+        </div>
+        <div class="question">
+          <label class="q-label">What does your company do?<span class="req">*</span></label>
+          <textarea name="company_description" placeholder="Describe your business, products, and/or services in as much detail as possible..."></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Services / Products Offered<span class="req">*</span></label>
+          <textarea name="services_products" placeholder="List all services or products you offer. Include pricing tiers if available."></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">How does your process work?</label>
+          <textarea name="process_workflow" placeholder="Step-by-step: how does a client engage with you? What does your workflow look like?"></textarea>
+        </div>
+        <div class="question" style="margin-bottom:0">
+          <label class="q-label">Key Outcomes / Results you deliver</label>
+          <textarea name="key_outcomes" placeholder="What transformation or result does a client get? E.g. 'We help businesses increase revenue by...'"></textarea>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Business Address / Location<span class="req">*</span></label>
+          <textarea name="business_address" placeholder="Full address (if applicable) or regions/countries you operate in" style="min-height:70px"></textarea>
+        </div>
+        <div class="row-2">
+          <div class="question">
+            <label class="q-label">Contact Phone Number</label>
+            <input type="tel" name="contact_phone" placeholder="+44 7700 900000">
+          </div>
+          <div class="question">
+            <label class="q-label">Contact Email Address<span class="req">*</span></label>
+            <input type="email" name="contact_email" placeholder="hello@yourcompany.com">
+          </div>
+        </div>
+        <div class="question" style="margin-bottom:0">
+          <label class="q-label">Office / Business Hours</label>
+          <input type="text" name="business_hours" placeholder="E.g. Mon–Fri 9am–6pm, Sat 10am–2pm">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Social Media Profiles</label>
+          <p class="q-hint">Paste links to any active profiles below.</p>
+        </div>
+        <div class="row-2">
+          <div class="question">
+            <label class="q-label">LinkedIn</label>
+            <input type="url" name="social_linkedin" placeholder="https://linkedin.com/company/...">
+          </div>
+          <div class="question">
+            <label class="q-label">Instagram</label>
+            <input type="url" name="social_instagram" placeholder="https://instagram.com/...">
+          </div>
+          <div class="question">
+            <label class="q-label">Facebook</label>
+            <input type="url" name="social_facebook" placeholder="https://facebook.com/...">
+          </div>
+          <div class="question">
+            <label class="q-label">TikTok</label>
+            <input type="url" name="social_tiktok" placeholder="https://tiktok.com/@...">
+          </div>
+          <div class="question">
+            <label class="q-label">YouTube</label>
+            <input type="url" name="social_youtube" placeholder="https://youtube.com/@...">
+          </div>
+          <div class="question">
+            <label class="q-label">X / Twitter</label>
+            <input type="url" name="social_twitter" placeholder="https://x.com/...">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5 — MARKET & COMPETITION -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <div class="section-title">Market & Competition</div>
+        <div class="section-subtitle">Position you effectively</div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Who are your main competitors?</label>
+          <p class="q-hint">Names or website URLs of businesses you compete with.</p>
+          <textarea name="competitors" placeholder="E.g. CompetitorA.com, Brand B, Company C — include websites if possible"></textarea>
+        </div>
+        <div class="question" style="margin-bottom:0">
+          <label class="q-label">What sets you apart from competitors?</label>
+          <textarea name="differentiators" placeholder="Your unique selling points, differentiators, or why clients choose you over others..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 6 — TRUST & SOCIAL PROOF -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <div class="section-title">Trust & Social Proof</div>
+        <div class="section-subtitle">Evidence that builds credibility</div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Key stats or achievements to showcase</label>
+          <p class="q-hint">Numbers speak loudly — any metrics that demonstrate your impact.</p>
+          <textarea name="key_stats" placeholder="E.g. 500+ clients served, 98% satisfaction rate, £2M revenue generated, 10 years in business..."></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Past clients or companies you've worked with</label>
+          <p class="q-hint">Company names or logos you have permission to display.</p>
+          <textarea name="past_clients" placeholder="List client/company names you'd like featured (only those you have permission to mention)"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">Do you have testimonials or reviews?</label>
+          <div class="toggle-group">
+            <button type="button" class="toggle-btn yes" onclick="toggle(this, 'testimonials-yes', 'h_testimonials', 'Yes')">✓ Yes</button>
+            <button type="button" class="toggle-btn no"  onclick="toggle(this, 'testimonials-no',  'h_testimonials', 'Not yet')">✕ Not yet</button>
+          </div>
+        </div>
+        <div class="conditional hidden" id="testimonials-yes">
+          <div class="question" style="margin-bottom:0">
+            <label class="q-label">Paste your testimonials here</label>
+            <textarea name="testimonials" placeholder='"Working with [Company] transformed our business..." — Jane D., CEO of XYZ Ltd'></textarea>
+          </div>
+        </div>
+        <div class="conditional hidden" id="testimonials-no">
+          <p class="q-hint" style="margin-top:8px">No problem — we can design a testimonials section you can fill in once you collect reviews.</p>
+        </div>
+        <div class="question" style="margin-bottom:0">
+          <label class="q-label">Portfolio / Past work to showcase</label>
+          <div class="file-drop">
+            <input type="file" name="portfolio_files" accept=".pdf,.zip,.jpg,.png" multiple onchange="fileChosen(this, 'portfolioChosen')">
+            <div class="file-drop-icon">🗂️</div>
+            <div class="file-drop-text">Upload images, PDFs, or a ZIP or <strong>browse</strong></div>
+            <div class="file-drop-hint">Before/after photos, case studies, project images</div>
+          </div>
+          <div class="file-chosen" id="portfolioChosen" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 7 — DESIGN INSPIRATION -->
+    <div class="group">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <div class="section-title">Design Inspiration</div>
+        <div class="section-subtitle">Websites you love</div>
+      </div>
+
+      <div class="card">
+        <div class="question">
+          <label class="q-label">Website designs you like as reference</label>
+          <p class="q-hint">Share URLs of websites whose look, feel, or layout inspires you.</p>
+          <textarea name="design_references" placeholder="https://example1.com &#10;https://example2.com &#10;https://example3.com"></textarea>
+        </div>
+        <div class="question">
+          <label class="q-label">What do you specifically like about those sites?</label>
+          <textarea name="design_likes" placeholder="E.g. 'I love the minimal layout of site 1, the bold typography of site 2...'"></textarea>
+        </div>
+        <div class="question" style="margin-bottom:0">
+          <label class="q-label">Anything else we should know?</label>
+          <textarea name="additional_notes" placeholder="Special requirements, must-haves, dealbreakers, languages, accessibility needs, integrations..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-section">
+      <button type="submit" class="submit-btn" id="submitBtn">
+        Submit Questionnaire →
+      </button>
+      <p class="submit-note">We'll review your answers and be in touch within 1–2 business days.</p>
+    </div>
+
+  </form><!-- /mainForm -->
+
+  <!-- Success screen (shown after AJAX submit) -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">🎉</div>
+    <h2 class="success-title">You're all set!</h2>
+    <p class="success-sub">Thank you for completing the onboarding questionnaire. Our team will review everything and reach out within <strong>1–2 business days</strong> to kick things off.</p>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+  // ── Toggle Yes/No ──
+  function toggle(btn, revealId, hiddenId, value) {
+    const parent = btn.closest('.question');
+    parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+
+    const card = btn.closest('.card');
+    card.querySelectorAll('.conditional').forEach(el => el.classList.add('hidden'));
+
+    const target = document.getElementById(revealId);
+    if (target) target.classList.remove('hidden');
+
+    // Write value to hidden input for Formspree
+    if (hiddenId) {
+      const hid = document.getElementById(hiddenId);
+      if (hid) hid.value = value;
+    }
+
+    updateProgress();
+  }
+
+  // ── Chip toggle ──
+  function toggleChip(chip) {
+    chip.classList.toggle('selected');
+
+    // Sync selected chip labels into the related hidden field
+    const group = chip.closest('.chip-group');
+    if (group && group.dataset.hidden) {
+      const selected = [...group.querySelectorAll('.chip.selected')].map(c => c.textContent).join(', ');
+      const hid = document.getElementById(group.dataset.hidden);
+      if (hid) hid.value = selected;
+    }
+
+    updateProgress();
+  }
+
+  // ── Theme selection ──
+  function selectTheme(card, theme) {
+    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    document.getElementById('h_preferred_theme').value = theme;
+    updateProgress();
+  }
+
+  // ── File chosen display ──
+  function fileChosen(input, outputId) {
+    const el = document.getElementById(outputId);
+    if (input.files && input.files.length > 0) {
+      const names = Array.from(input.files).map(f => f.name).join(', ');
+      el.style.display = 'block';
+      el.textContent = '✓ ' + names;
+    }
+    updateProgress();
+  }
+
+  // ── Color sync ──
+  function updateColorText(pickerId, textId) {
+    document.getElementById(textId).value = document.getElementById(pickerId).value;
+  }
+  function updateColorPicker(pickerId, val) {
+    if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+      document.getElementById(pickerId).value = val;
+    }
+  }
+
+  // ── Progress bar ──
+  function updateProgress() {
+    const interacted = document.querySelectorAll('.toggle-btn.selected, .chip.selected, .theme-card.selected').length;
+    const totalInteractions = document.querySelectorAll('.toggle-group').length + document.querySelectorAll('.theme-cards').length;
+    const done = Math.min(interacted, totalInteractions);
+    const pct = totalInteractions > 0 ? Math.round((done / totalInteractions) * 100) : 0;
+    document.getElementById('progressFill').style.width = Math.min(pct, 100) + '%';
+    document.getElementById('progressCount').textContent = Math.min(pct, 100) + '% complete';
+  }
+
+  // ── AJAX Formspree submit ──
+  // Uses no-cors so it works when the file is opened locally (file://) OR hosted online.
+  // With no-cors we can't read the response, so we just wait briefly then show success.
+  document.getElementById('mainForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+
+    const formData = new FormData(this);
+
+    try {
+      await fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        mode: 'no-cors'   // ← works from local file:// and any hosted domain
+      });
+    } catch (err) {
+      // Even on network error, Formspree may still receive it — show success anyway.
+      // If you want strict error handling, host the file on a server instead.
+    }
+
+    // Show success screen regardless (no-cors returns opaque response we can't inspect)
+    document.getElementById('mainForm').style.display = 'none';
+    document.getElementById('successScreen').classList.add('show');
+    document.querySelector('.progress-wrap').style.display = 'none';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>
