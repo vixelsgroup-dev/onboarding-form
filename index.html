@@ -914,40 +914,102 @@
   const TOTAL_STEPS = 7;
   let currentStep = 1;
 
-  // ── Required checks per step ──
-  const stepValidators = {
-    1: () => val('h_existing_website'),
-    2: () => val('h_logo') && val('h_brand_guidelines') && val('h_preferred_theme'),
-    3: () => val('h_website_copy'),
-    4: () => filled('company_name') && filled('company_description') &&
-              filled('services_products') && filled('business_address') &&
-              filled('contact_email'),
-    5: () => true,
-    6: () => true,
-    7: () => true,
-  };
+  // ─────────────────────────────────────────
+  // VALIDATION — required fields per step
+  // ─────────────────────────────────────────
+  // Returns true if the step is complete enough to proceed.
+  // We only check fields marked with * in the UI.
 
-  function val(id) {
+  function isStepValid(step) {
+    switch (step) {
+      case 1:
+        // Must pick Yes or No for existing website
+        return getHidden('h_existing_website') !== '';
+
+      case 2:
+        // Must pick logo option + brand guidelines option + theme
+        return getHidden('h_logo') !== ''
+            && getHidden('h_brand_guidelines') !== ''
+            && getHidden('h_preferred_theme') !== '';
+
+      case 3:
+        // Must pick Yes or No for copy
+        return getHidden('h_website_copy') !== '';
+
+      case 4:
+        // Must fill company name, description, services, address, email
+        return getField('company_name')        !== ''
+            && getField('company_description') !== ''
+            && getField('services_products')   !== ''
+            && getField('business_address')    !== ''
+            && getField('contact_email')       !== '';
+
+      default:
+        // Steps 5, 6, 7 — no required fields
+        return true;
+    }
+  }
+
+  // Get value of a hidden input by id
+  function getHidden(id) {
     const el = document.getElementById(id);
-    return el && el.value.trim() !== '';
+    return el ? el.value.trim() : '';
   }
 
-  function filled(name) {
-    const el = document.querySelector(`[name="${name}"]`);
-    return el && el.value.trim() !== '';
+  // Get value of a named input/textarea
+  function getField(name) {
+    const el = document.querySelector('[name="' + name + '"]');
+    return el ? el.value.trim() : '';
   }
 
-  function checkValidity() {
-    const panel = document.querySelector(`.step-panel[data-step="${currentStep}"]`);
+  // ─────────────────────────────────────────
+  // UPDATE CONTINUE BUTTON STATE
+  // Only touches the Continue button (type="button") in the ACTIVE step.
+  // NEVER touches the Submit button.
+  // ─────────────────────────────────────────
+  function refreshBtn() {
+    const panel = document.querySelector('.step-panel[data-step="' + currentStep + '"]');
     if (!panel) return;
-    // Find the Continue btn only — never disable the submit button
-    const btn = panel.querySelector('.btn-next[type="button"]');
-    if (!btn) return;
-    const valid = stepValidators[currentStep] ? stepValidators[currentStep]() : true;
-    btn.disabled = !valid;
+
+    // Specifically target only the continue button, not submit
+    const continueBtn = panel.querySelector('button.btn-next[type="button"]');
+    if (continueBtn) {
+      continueBtn.disabled = !isStepValid(currentStep);
+    }
+    // Submit button (step 7) is NEVER touched here — always enabled
   }
 
-  // ── Build step dots ──
+  // ─────────────────────────────────────────
+  // STEP NAVIGATION
+  // ─────────────────────────────────────────
+  function showStep(n) {
+    // Hide all panels
+    document.querySelectorAll('.step-panel').forEach(function(p) {
+      p.classList.remove('active');
+    });
+
+    // Show target panel
+    const panel = document.querySelector('.step-panel[data-step="' + n + '"]');
+    if (panel) panel.classList.add('active');
+
+    currentStep = n;
+    updateDots();
+    refreshBtn();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextStep() {
+    if (!isStepValid(currentStep)) return; // extra guard
+    if (currentStep < TOTAL_STEPS) showStep(currentStep + 1);
+  }
+
+  function prevStep() {
+    if (currentStep > 1) showStep(currentStep - 1);
+  }
+
+  // ─────────────────────────────────────────
+  // PROGRESS DOTS + BAR
+  // ─────────────────────────────────────────
   function buildDots() {
     const container = document.getElementById('stepDots');
     container.innerHTML = '';
@@ -957,14 +1019,14 @@
 
       const dot = document.createElement('div');
       dot.className = 'step-dot';
-      dot.id = `dot-${i}`;
-      dot.innerHTML = `<span>${i}</span>`;
+      dot.id = 'dot-' + i;
+      dot.innerHTML = '<span>' + i + '</span>';
       wrap.appendChild(dot);
 
       if (i < TOTAL_STEPS) {
         const line = document.createElement('div');
         line.className = 'step-connector';
-        line.id = `connector-${i}`;
+        line.id = 'conn-' + i;
         wrap.appendChild(line);
       }
 
@@ -972,104 +1034,121 @@
     }
   }
 
-  // ── Update progress visuals ──
-  function updateProgress() {
-    const pct = ((currentStep - 1) / TOTAL_STEPS) * 100;
+  function updateDots() {
+    // Progress bar fill: 0% on step 1, 100% on step 7
+    const pct = ((currentStep - 1) / (TOTAL_STEPS - 1)) * 100;
     document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressFraction').textContent = `Step ${currentStep} of ${TOTAL_STEPS}`;
+    document.getElementById('progressFraction').textContent = 'Step ' + currentStep + ' of ' + TOTAL_STEPS;
 
     for (let i = 1; i <= TOTAL_STEPS; i++) {
-      const dot = document.getElementById(`dot-${i}`);
-      dot.classList.remove('active', 'done');
+      const dot = document.getElementById('dot-' + i);
+      if (!dot) continue;
+      dot.className = 'step-dot'; // reset
+
       if (i < currentStep) {
         dot.classList.add('done');
-        dot.innerHTML = '';
+        dot.innerHTML = ''; // checkmark shown via CSS ::after
       } else if (i === currentStep) {
         dot.classList.add('active');
-        dot.innerHTML = `<span>${i}</span>`;
+        dot.innerHTML = '<span>' + i + '</span>';
       } else {
-        dot.innerHTML = `<span>${i}</span>`;
+        dot.innerHTML = '<span>' + i + '</span>';
       }
 
       if (i < TOTAL_STEPS) {
-        const conn = document.getElementById(`connector-${i}`);
+        const conn = document.getElementById('conn-' + i);
         if (conn) conn.classList.toggle('done', i < currentStep);
       }
     }
   }
 
-  // ── Show step ──
-  function showStep(n) {
-    document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
-    const panel = document.querySelector(`.step-panel[data-step="${n}"]`);
-    if (panel) panel.classList.add('active');
-    currentStep = n;
-    updateProgress();
-    checkValidity();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function nextStep() {
-    if (currentStep < TOTAL_STEPS) showStep(currentStep + 1);
-  }
-
-  function prevStep() {
-    if (currentStep > 1) showStep(currentStep - 1);
-  }
-
-  // ── Toggle Yes/No ──
+  // ─────────────────────────────────────────
+  // TOGGLE (Yes / No buttons)
+  // ─────────────────────────────────────────
   function toggle(btn, revealId, hiddenId, value) {
-    const parent = btn.closest('.question');
-    parent.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+    // Deselect siblings in same toggle-group
+    const group = btn.closest('.toggle-group');
+    group.querySelectorAll('.toggle-btn').forEach(function(b) {
+      b.classList.remove('selected');
+    });
     btn.classList.add('selected');
+
+    // Hide all conditionals inside the same card
     const card = btn.closest('.card');
-    card.querySelectorAll('.conditional').forEach(el => el.classList.add('hidden'));
+    card.querySelectorAll('.conditional').forEach(function(el) {
+      el.classList.add('hidden');
+    });
+
+    // Reveal the target conditional
     const target = document.getElementById(revealId);
     if (target) target.classList.remove('hidden');
-    if (hiddenId) {
-      const hid = document.getElementById(hiddenId);
-      if (hid) hid.value = value;
-    }
-    checkValidity();
+
+    // Store value in hidden field
+    const hid = document.getElementById(hiddenId);
+    if (hid) hid.value = value;
+
+    refreshBtn();
   }
 
-  // ── Chip toggle ──
+  // ─────────────────────────────────────────
+  // CHIPS (multi-select)
+  // ─────────────────────────────────────────
   function toggleChip(chip) {
     chip.classList.toggle('selected');
+
     const group = chip.closest('.chip-group');
     if (group && group.dataset.hidden) {
-      const selected = [...group.querySelectorAll('.chip.selected')].map(c => c.textContent).join(', ');
+      const selected = Array.from(group.querySelectorAll('.chip.selected'))
+        .map(function(c) { return c.textContent.trim(); })
+        .join(', ');
       const hid = document.getElementById(group.dataset.hidden);
       if (hid) hid.value = selected;
     }
-    checkValidity();
+    refreshBtn();
   }
 
-  // ── Theme select ──
+  // ─────────────────────────────────────────
+  // THEME CARDS
+  // ─────────────────────────────────────────
   function selectTheme(card, theme) {
-    document.querySelectorAll('.theme-card').forEach(c => c.classList.remove('selected'));
+    document.querySelectorAll('.theme-card').forEach(function(c) {
+      c.classList.remove('selected');
+    });
     card.classList.add('selected');
     document.getElementById('h_preferred_theme').value = theme;
-    checkValidity();
+    refreshBtn();
   }
 
-  // ── Colour sync ──
+  // ─────────────────────────────────────────
+  // COLOUR PICKERS
+  // ─────────────────────────────────────────
   function updateColorText(pickerId, textId) {
     document.getElementById(textId).value = document.getElementById(pickerId).value;
   }
-  function updateColorPicker(pickerId, val) {
-    if (/^#[0-9A-Fa-f]{6}$/.test(val)) document.getElementById(pickerId).value = val;
+  function updateColorPicker(pickerId, hexValue) {
+    if (/^#[0-9A-Fa-f]{6}$/.test(hexValue)) {
+      document.getElementById(pickerId).value = hexValue;
+    }
   }
 
-  // ── Live validation on text input ──
-  document.getElementById('mainForm').addEventListener('input', checkValidity);
+  // ─────────────────────────────────────────
+  // LIVE VALIDATION — fires on every keystroke
+  // Only refreshes the active step's continue button
+  // ─────────────────────────────────────────
+  document.getElementById('mainForm').addEventListener('input', function(e) {
+    // Don't interfere with the submit button on step 7
+    refreshBtn();
+  });
 
-  // ── AJAX Submit ──
+  // ─────────────────────────────────────────
+  // FORM SUBMIT — AJAX to Formspree
+  // ─────────────────────────────────────────
   document.getElementById('mainForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
 
     try {
       await fetch(this.action, {
@@ -1077,18 +1156,23 @@
         body: new FormData(this),
         mode: 'no-cors'
       });
-    } catch (err) {}
+    } catch (err) {
+      // no-cors fetch — errors are expected, submission still goes through
+    }
 
+    // Show success
     document.getElementById('mainForm').style.display = 'none';
     document.getElementById('progressHeader').style.display = 'none';
     document.getElementById('successScreen').classList.add('show');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  // ── Init ──
+  // ─────────────────────────────────────────
+  // INIT
+  // ─────────────────────────────────────────
   buildDots();
-  updateProgress();
-  checkValidity();
+  updateDots();
+  refreshBtn(); // disable step 1 continue until toggle is picked
 </script>
 </body>
 </html>
